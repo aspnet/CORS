@@ -1,0 +1,19 @@
+﻿{
+    "version": "1.0.0-*",
+    "description": "ASP.NET 5 CORS middleware.",
+    "dependencies": {
+        "Microsoft.AspNet.Cors.Core": "1.0.0-*",
+        "Microsoft.AspNet.RequestContainer": "1.0.0-*",
+        "Microsoft.AspNet.WebUtilities": "1.0.0-*"
+    },
+    "frameworks": {
+        "aspnet50": {
+            "dependencies": {}
+        },
+        "aspnetcore50": {
+            "dependencies": {
+                "System.Runtime": "4.0.20-beta-*"
+            }
+        }
+    }
+}
