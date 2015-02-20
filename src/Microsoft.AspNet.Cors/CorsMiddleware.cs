@@ -35,10 +35,9 @@ namespace Microsoft.AspNet.Cors
 
         public async Task Invoke(HttpContext context)
         {
-            var corsRequestContext = new CorsRequestContext(context);
-
-            if (corsRequestContext.IsCorsRequest)
+            if (CorsHelper.IsCorsRequest(context))
             {
+                var corsRequestContext = new CorsRequestContext(context);
                 var corsPolicy = await _options.PolicyProvider.GetCorsPolicyAsync(corsRequestContext);
 
                 if (corsPolicy != null)

@@ -17,15 +17,11 @@ namespace Microsoft.AspNet.Cors.Core
         public CorsRequestContext(HttpContext context)
         {
             Origin = context.Request.Headers.Get(CorsConstants.Origin);
-
-            if (IsCorsRequest)
-            {
-                RequestPath = context.Request.Path;
-                HttpMethod = context.Request.Method;
-                Host = context.Request.Host.Value;
-                AccessControlRequestMethod = context.Request.Headers.Get(CorsConstants.AccessControlRequestMethod);
-                AccessControlRequestHeaders = context.Request.Headers.GetCommaSeparatedValues(CorsConstants.AccessControlRequestHeaders);
-            }
+            RequestPath = context.Request.Path;
+            HttpMethod = context.Request.Method;
+            Host = context.Request.Host.Value;
+            AccessControlRequestMethod = context.Request.Headers.Get(CorsConstants.AccessControlRequestMethod);
+            AccessControlRequestHeaders = context.Request.Headers.GetCommaSeparatedValues(CorsConstants.AccessControlRequestHeaders);
         }
 
         /// <inheritdoc />
@@ -56,13 +52,5 @@ namespace Microsoft.AspNet.Cors.Core
 
         /// <inheritdoc />
         public PathString RequestPath { get; set; }
-
-        /// <summary>
-        /// Returns true if the request contains an 'Origin' header.
-        /// </summary>
-        public bool IsCorsRequest
-        {
-            get { return !string.IsNullOrEmpty(Origin); }
-        }
     }
 }

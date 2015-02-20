@@ -18,12 +18,5 @@
     },
     "exclude": [
         "wwwroot"
-    ],
-    "bundleExclude": [
-        "node_modules",
-        "bower_components",
-        "**.kproj",
-        "**.user",
-        "**.vspscc"
     ]
 }

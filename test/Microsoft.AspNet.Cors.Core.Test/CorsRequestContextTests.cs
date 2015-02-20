@@ -13,7 +13,6 @@ namespace Microsoft.AspNet.Cors.Core.Test
         public void Validate_CorsRequestContext_Defaults()
         {
             var corsRequestContext = new CorsRequestContext();
-            Assert.False(corsRequestContext.IsCorsRequest);
             Assert.False(corsRequestContext.IsPreflight);
             Assert.Null(corsRequestContext.AccessControlRequestMethod);
             Assert.Null(corsRequestContext.AccessControlRequestHeaders);
@@ -32,7 +31,6 @@ namespace Microsoft.AspNet.Cors.Core.Test
             httpContext.Request.Headers.Add(CorsConstants.AccessControlRequestMethod, new string[] { "GET" });
             httpContext.Request.Headers.Add(CorsConstants.AccessControlRequestHeaders, new string[] { "Header1", "Header2" });
             var corsRequestContext = new CorsRequestContext(httpContext);
-            Assert.True(corsRequestContext.IsCorsRequest);
             Assert.True(corsRequestContext.IsPreflight);
             Assert.Equal("GET", corsRequestContext.AccessControlRequestMethod);
             Assert.Equal(new List<string>{ "Header1", "Header2" }, corsRequestContext.AccessControlRequestHeaders);
@@ -45,7 +43,6 @@ namespace Microsoft.AspNet.Cors.Core.Test
             httpContext.Request.Method = CorsConstants.PreflightHttpMethod;
             httpContext.Request.Headers.Add(CorsConstants.Origin, new string[] { "http://localhost:5001/" });
             var corsRequestContext = new CorsRequestContext(httpContext);
-            Assert.True(corsRequestContext.IsCorsRequest);
             Assert.False(corsRequestContext.IsPreflight);
         }
 
@@ -57,7 +54,6 @@ namespace Microsoft.AspNet.Cors.Core.Test
             httpContext.Request.Headers.Add(CorsConstants.Origin, new string[] { "http://localhost:5001/" });
             httpContext.Request.Headers.Add(CorsConstants.AccessControlRequestMethod, new string[] { "GET" });
             var corsRequestContext = new CorsRequestContext(httpContext);
-            Assert.True(corsRequestContext.IsCorsRequest);
             Assert.True(corsRequestContext.IsPreflight);
         }
 
@@ -68,7 +64,6 @@ namespace Microsoft.AspNet.Cors.Core.Test
             httpContext.Request.Method = "GET";
             httpContext.Request.Headers.Add(CorsConstants.Origin, new string[] { "http://localhost:5001/" });
             var corsRequestContext = new CorsRequestContext(httpContext);
-            Assert.True(corsRequestContext.IsCorsRequest);
             Assert.False(corsRequestContext.IsPreflight);
         }
     }

@@ -9,6 +9,8 @@ namespace Microsoft.AspNet.Cors.Core
     /// <inheritdoc />
     public class CorsPolicy : ICorsPolicy
     {
+        private long? _preflightMaxAge;
+
         /// <inheritdoc />
         public bool AllowAnyHeader { get; set; }
 
@@ -29,8 +31,6 @@ namespace Microsoft.AspNet.Cors.Core
 
         /// <inheritdoc />
         public IList<string> Origins { get; private set; } = new List<string>();
-
-        private long? _preflightMaxAge;
 
         /// <inheritdoc />
         public long? PreflightMaxAge

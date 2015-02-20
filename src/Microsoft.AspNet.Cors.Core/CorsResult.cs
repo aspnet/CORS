@@ -10,6 +10,8 @@ namespace Microsoft.AspNet.Cors.Core
     /// <inheritdoc />
     public class CorsResult : ICorsResult
     {
+        private long? _preflightMaxAge;
+
         /// <inheritdoc />
         public IList<string> AllowedExposedHeaders { get; } = new List<string>();
 
@@ -33,8 +35,6 @@ namespace Microsoft.AspNet.Cors.Core
                 return ErrorMessages.Count == 0;
             }
         }
-
-        private long? _preflightMaxAge;
 
         /// <inheritdoc />
         public long? PreflightMaxAge

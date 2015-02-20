@@ -7,7 +7,7 @@ using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
 
-namespace Client
+namespace CORSClient
 {
     public class Startup
     {

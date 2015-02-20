@@ -260,13 +260,34 @@ namespace Microsoft.AspNet.Cors.Core.Test
                 AccessControlRequestHeaders = new List<string> { "CustomHeader1" }
             };
 
-            corsRequestContext.AccessControlRequestHeaders = new List<string> { "CustomHeader1" };
-
             var policy = engine.EvaluatePolicy(corsRequestContext, AllowSpecificUrlPolicy);
 
             Assert.False(policy.IsValid);
             var headers = policy.GetResponseHeaders();
             Assert.Empty(headers);
+        }
+
+        [Fact]
+        public void PreFlight_Request_With_SpecificUrl_Policy_For_Case_Insensitive_Allowed_Header()
+        {
+            var engine = new CorsEngine();
+            var corsRequestContext = new CorsRequestContext
+            {
+                HttpMethod = CorsConstants.PreflightHttpMethod,
+                Origin = "http://localhost:5001/sub",
+                AccessControlRequestMethod = "PUT",
+                AccessControlRequestHeaders = new List<string> { "AllowedHeader1" }
+            };
+
+            var policy = engine.EvaluatePolicy(corsRequestContext, AllowSpecificUrlPolicy);
+
+            Assert.True(policy.IsValid);
+            var headers = policy.GetResponseHeaders();
+            Assert.Equal(4, headers.Count);
+            Assert.Equal("http://localhost:5001/sub", headers[CorsConstants.AccessControlAllowOrigin]);
+            Assert.Equal("PUT", headers[CorsConstants.AccessControlAllowMethods]);
+            Assert.Equal("AllowedHeader1", headers[CorsConstants.AccessControlAllowHeaders]);
+            Assert.Equal("300", headers[CorsConstants.AccessControlMaxAge]);
         }
     }
 }
