@@ -15,6 +15,6 @@ namespace Microsoft.AspNet.Cors.Core
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        Task<ICorsPolicy> GetCorsPolicyAsync([NotNull]ICorsRequestContext context);
+        Task<CorsPolicy> GetCorsPolicyAsync([NotNull]CorsRequestContext context);
     }
 }

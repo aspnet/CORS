@@ -7,13 +7,21 @@ using Microsoft.AspNet.Http;
 
 namespace Microsoft.AspNet.Cors.Core
 {
-    /// <inheritdoc />
-    public class CorsRequestContext : ICorsRequestContext
+    /// <summary>
+    /// Indicates the data from a CORS request.
+    /// </summary>
+    public class CorsRequestContext
     {
+        /// <summary>
+        /// Instantiates an instance of <see cref="CorsRequestContext"/>.
+        /// </summary>
         public CorsRequestContext()
         {
         }
 
+        /// <summary>
+        /// Instantiates an instance of <see cref="CorsRequestContext"/>.
+        /// </summary>
         public CorsRequestContext(HttpContext context)
         {
             Origin = context.Request.Headers.Get(CorsConstants.Origin);
@@ -24,19 +32,39 @@ namespace Microsoft.AspNet.Cors.Core
             AccessControlRequestHeaders = context.Request.Headers.GetCommaSeparatedValues(CorsConstants.AccessControlRequestHeaders);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Value of the 'Origin' header from the request.
+        /// </summary>
+        public string Origin { get; set; }
+
+        /// <summary>
+        /// Value of 'Access-Control-Request-Headers' header from the request.
+        /// </summary>
         public IList<string> AccessControlRequestHeaders { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Value of 'Access-Control-Request-Method' header from the request.
+        /// </summary>
         public string AccessControlRequestMethod { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Value of 'Host' header from the request.
+        /// </summary>
         public string Host { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// HTTP verb of the request.
+        /// </summary>
         public string HttpMethod { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Path to which request was received.
+        /// </summary>
+        public PathString RequestPath { get; set; }
+
+        /// <summary>
+        /// Indicates if this is a CORS preflight request.
+        /// </summary>
         public bool IsPreflight
         {
             get
@@ -46,11 +74,5 @@ namespace Microsoft.AspNet.Cors.Core
                     string.Equals(HttpMethod, CorsConstants.PreflightHttpMethod, StringComparison.OrdinalIgnoreCase);
             }
         }
-
-        /// <inheritdoc />
-        public string Origin { get; set; }
-
-        /// <inheritdoc />
-        public PathString RequestPath { get; set; }
     }
 }

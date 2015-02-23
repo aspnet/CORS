@@ -28,7 +28,7 @@ namespace Microsoft.AspNet.Cors.Test
                         policy.Methods.Add("PUT");
                         policy.Headers.Add("Header1");
                         policy.ExposedHeaders.Add("AllowedHeader");
-                        return Task.FromResult<ICorsPolicy>(policy);
+                        return Task.FromResult(policy);
                     }
                 }
             };

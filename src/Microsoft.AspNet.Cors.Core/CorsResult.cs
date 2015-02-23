@@ -7,27 +7,49 @@ using System.Linq;
 
 namespace Microsoft.AspNet.Cors.Core
 {
-    /// <inheritdoc />
-    public class CorsResult : ICorsResult
+    /// <summary>
+    /// Result of a CORS request validation.
+    /// </summary>
+    public class CorsResult
     {
         private long? _preflightMaxAge;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates the headers safe to expose to the API of a CORS API specification.
+        /// Corresponds to Access-Control-Expose-Headers CORS response header.
+        /// More information: http://www.w3.org/TR/cors/#access-control-expose-headers-response-header
+        /// </summary>
         public IList<string> AllowedExposedHeaders { get; } = new List<string>();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates as part of response to a preflight request, which header field names can be used during actual request. 
+        /// Corresponds to Access-Control-Allow-Headers CORS response header.
+        /// More information: http://www.w3.org/TR/cors/#access-control-allow-headers-response-header
+        /// </summary>
         public IList<string> AllowedHeaders { get; } = new List<string>();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates as part of response to a preflight request, which HTTP methods can be used during actual request.
+        /// Corresponds to Access-Control-Allow-Methods CORS response header.
+        /// More information: http://www.w3.org/TR/cors/#access-control-allow-methods-response-header
+        /// </summary>
         public IList<string> AllowedMethods { get; } = new List<string>();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates whether a resource can be shared based by returning the value of the 'Origin' request header, '*' or "null" in the response.
+        /// Corresponds to Access-Control-Allow-Origin CORS response header.
+        /// More information: http://www.w3.org/TR/cors/#access-control-allow-origin-response-header
+        /// </summary>
         public string AllowedOrigin { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates the errors encountered while validating the CORS request.
+        /// </summary>
         public IList<string> ErrorMessages { get; } = new List<string>();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates if a CORS request is valid per the <see cref="ICorsPolicy"/> defined.
+        /// </summary>
         public bool IsValid
         {
             get
@@ -36,7 +58,11 @@ namespace Microsoft.AspNet.Cors.Core
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates how long the results of a preflight request can be cached in a preflight result cache.
+        /// Corresponds to Access-Control-Max-Age CORS response header.
+        /// More information: http://www.w3.org/TR/cors/#access-control-max-age-response-header
+        /// </summary>
         public long? PreflightMaxAge
         {
             get
@@ -54,10 +80,17 @@ namespace Microsoft.AspNet.Cors.Core
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates as part of a response if the browser can send or receive credentials (cookies or authorization headers).
+        /// Corresponds to Access-Control-Allow-Credentials CORS response header.
+        /// More information: http://www.w3.org/TR/cors/#access-control-allow-credentials-response-header
+        /// </summary>
         public bool SupportsCredentials { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets all the headers that needs to be set to the CORS response.
+        /// </summary>
+        /// <returns></returns>
         public IDictionary<string, string> GetResponseHeaders()
         {
             var headers = new Dictionary<string, string>();

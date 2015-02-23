@@ -10,7 +10,7 @@ namespace Microsoft.AspNet.Cors.Core
     public class CorsEngine : ICorsEngine
     {
         /// <inheritdoc />
-        public ICorsResult EvaluatePolicy([NotNull]ICorsRequestContext requestContext, [NotNull]ICorsPolicy policy)
+        public CorsResult EvaluatePolicy([NotNull]CorsRequestContext requestContext, [NotNull]CorsPolicy policy)
         {
             var corsResult = new CorsResult();
 
@@ -41,9 +41,9 @@ namespace Microsoft.AspNet.Cors.Core
         }
 
         private static bool TryValidateOrigin(
-            [NotNull]ICorsRequestContext requestContext,
-            [NotNull]ICorsPolicy policy,
-            [NotNull]ICorsResult result)
+            [NotNull]CorsRequestContext requestContext,
+            [NotNull]CorsPolicy policy,
+            [NotNull]CorsResult result)
         {
             if (requestContext.Origin != null)
             {
@@ -71,9 +71,9 @@ namespace Microsoft.AspNet.Cors.Core
         }
 
         private static bool TryValidateMethod(
-            [NotNull]ICorsRequestContext requestContext,
-            [NotNull]ICorsPolicy policy,
-            [NotNull]ICorsResult result)
+            [NotNull]CorsRequestContext requestContext,
+            [NotNull]CorsPolicy policy,
+            [NotNull]CorsResult result)
         {
             if (policy.AllowAnyMethod || policy.Methods.Contains(requestContext.AccessControlRequestMethod))
             {
@@ -88,9 +88,9 @@ namespace Microsoft.AspNet.Cors.Core
         }
 
         private static bool TryValidateHeaders(
-            [NotNull]ICorsRequestContext requestContext,
-            [NotNull]ICorsPolicy policy,
-            [NotNull]ICorsResult result)
+            [NotNull]CorsRequestContext requestContext,
+            [NotNull]CorsPolicy policy,
+            [NotNull]CorsResult result)
         {
             if (policy.AllowAnyHeader ||                                        // Any header allowed
                 requestContext.AccessControlRequestHeaders == null ||           // No Access-Control-Request-Headers found in request

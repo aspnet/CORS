@@ -14,16 +14,16 @@ namespace Microsoft.AspNet.Cors.Core
         /// </summary>
         public CorsPolicyProvider()
         {
-            PolicyResolver = request => Task.FromResult<ICorsPolicy>(null);
+            PolicyResolver = request => Task.FromResult<CorsPolicy>(null);
         }
 
         /// <summary>
         /// A pluggable callback that will be used to select the CORS policy for the given requests.
         /// </summary>
-        public Func<ICorsRequestContext, Task<ICorsPolicy>> PolicyResolver { get; set; }
+        public Func<CorsRequestContext, Task<CorsPolicy>> PolicyResolver { get; set; }
 
         /// <inheritdoc />
-        public virtual Task<ICorsPolicy> GetCorsPolicyAsync(ICorsRequestContext context)
+        public virtual Task<CorsPolicy> GetCorsPolicyAsync(CorsRequestContext context)
         {
             return PolicyResolver(context);
         }

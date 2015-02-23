@@ -33,7 +33,7 @@ namespace CORSServer
                             AllowAnyHeader = true
                         };
 
-                        return Task.FromResult<ICorsPolicy>(allowAllPolicy);
+                        return Task.FromResult(allowAllPolicy);
                     }
                 }
             };

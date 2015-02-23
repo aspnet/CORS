@@ -21,7 +21,7 @@ namespace Microsoft.AspNet.Cors.Core.Test
         [Fact]
         public async Task Custom_Policy_Resolver()
         {
-            var policyCache = new Dictionary<string, ICorsPolicy>();
+            var policyCache = new Dictionary<string, CorsPolicy>();
             policyCache.Add("policy1", new CorsPolicy { PreflightMaxAge = 1 });
             policyCache.Add("policy2", new CorsPolicy { PreflightMaxAge = 2 });
             policyCache.Add("policy3", new CorsPolicy { PreflightMaxAge = 3 });
@@ -32,7 +32,7 @@ namespace Microsoft.AspNet.Cors.Core.Test
                 PolicyResolver = context =>
                 {
                     var policyName = context.RequestPath.Value.Substring(1);
-                    ICorsPolicy appliedPolicy;
+                    CorsPolicy appliedPolicy;
                     policyCache.TryGetValue(policyName, out appliedPolicy);
                     return Task.FromResult(appliedPolicy);
                 }
@@ -43,7 +43,7 @@ namespace Microsoft.AspNet.Cors.Core.Test
                 var policyName = "policy" + index.ToString();
                 var corsRequestContext = new CorsRequestContext() { RequestPath = new PathString("/" + policyName) };
                 var appliedPolicy = await policyProvider.GetCorsPolicyAsync(corsRequestContext);
-                ICorsPolicy expectedPolicy;
+                CorsPolicy expectedPolicy;
                 policyCache.TryGetValue(policyName, out expectedPolicy);
                 Assert.Equal(expectedPolicy, appliedPolicy);
                 if (expectedPolicy != null)

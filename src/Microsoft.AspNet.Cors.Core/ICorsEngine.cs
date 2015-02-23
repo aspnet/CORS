@@ -14,6 +14,6 @@ namespace Microsoft.AspNet.Cors.Core
         /// <param name="requestContext"></param>
         /// <param name="policy"></param>
         /// <returns></returns>
-        ICorsResult EvaluatePolicy([NotNull]ICorsRequestContext requestContext, [NotNull]ICorsPolicy policy);
+        CorsResult EvaluatePolicy([NotNull]CorsRequestContext requestContext, [NotNull]CorsPolicy policy);
     }
 }

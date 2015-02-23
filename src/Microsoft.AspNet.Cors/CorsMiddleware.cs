@@ -80,7 +80,7 @@ namespace Microsoft.AspNet.Cors
             }
         }
 
-        private static void WriteCorsHeaders(HttpContext context, ICorsResult result)
+        private static void WriteCorsHeaders(HttpContext context, CorsResult result)
         {
             foreach (var header in result.GetResponseHeaders())
             {

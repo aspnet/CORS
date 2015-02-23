@@ -8,7 +8,7 @@ namespace Microsoft.AspNet.Cors.Core.Test
 {
     public class CorsEngineTests
     {
-        public ICorsPolicy AllowAllPolicy
+        public CorsPolicy AllowAllPolicy
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Microsoft.AspNet.Cors.Core.Test
             }
         }
 
-        public ICorsPolicy AllowAllPolicyWithCredentials
+        public CorsPolicy AllowAllPolicyWithCredentials
         {
             get
             {
@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Cors.Core.Test
             }
         }
 
-        public ICorsPolicy AllowSpecificUrlPolicy
+        public CorsPolicy AllowSpecificUrlPolicy
         {
             get
             {
