@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.AspNet.Cors.Core;
 
 namespace Microsoft.AspNet.Cors
@@ -19,5 +20,6 @@ namespace Microsoft.AspNet.Cors
         /// The CORS engine.
         /// </summary>
         public ICorsEngine CorsEngine { get; set; }
+
     }
 }

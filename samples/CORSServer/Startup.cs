@@ -1,10 +1,7 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Cors;
-using Microsoft.AspNet.Cors.Core;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Http;
 using Microsoft.Framework.Logging;
@@ -20,25 +17,7 @@ namespace CORSServer
 
             app.UseErrorPage(ErrorPageOptions.ShowAll);
 
-            var options = new CorsOptions()
-            {
-                PolicyProvider = new CorsPolicyProvider()
-                {
-                    PolicyResolver = context =>
-                    {
-                        var allowAllPolicy = new CorsPolicy()
-                        {
-                            AllowAnyOrigin = true,
-                            AllowAnyMethod = true,
-                            AllowAnyHeader = true
-                        };
-
-                        return Task.FromResult(allowAllPolicy);
-                    }
-                }
-            };
-
-            app.UseCors(options);
+            app.UseCors("http://localhost:5001/");
 
             app.Run(async context =>
             {

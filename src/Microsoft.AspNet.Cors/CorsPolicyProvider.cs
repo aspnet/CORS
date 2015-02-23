@@ -3,14 +3,15 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Cors.Core;
 
-namespace Microsoft.AspNet.Cors.Core
+namespace Microsoft.AspNet.Cors
 {
     /// <inheritdoc />
     public class CorsPolicyProvider : ICorsPolicyProvider
     {
         /// <summary>
-        /// Creates a new CorsPolicyProvider instance.
+        /// Creates a new <see cref="CorsPolicyProvider"/> instance.
         /// </summary>
         public CorsPolicyProvider()
         {

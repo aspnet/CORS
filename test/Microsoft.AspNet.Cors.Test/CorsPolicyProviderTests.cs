@@ -3,10 +3,11 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Cors.Core;
 using Microsoft.AspNet.Http;
 using Xunit;
 
-namespace Microsoft.AspNet.Cors.Core.Test
+namespace Microsoft.AspNet.Cors.Test
 {
     public class CorsPolicyProviderTests
     {
