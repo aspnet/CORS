@@ -1,0 +1,41 @@
+﻿<html>
+<head>
+    <script src="~/jquery/jquery.js"></script>
+
+    <script>
+        // CORSServer project needs to be hosted in this URL.
+        var serviceUrl = 'http://localhost:28344';
+
+        function sendRequest() {
+            var method = $('#method').val();
+
+            $.ajax({
+                type: method,
+                url: serviceUrl,
+                // These headers always generate a preflight request irrespective of the method.
+                // To disable preflight request for GET, HEAD and POST comment these headers.
+                headers: {
+                    "CustomHeader1": "CustomHeaderValue1",
+                    "CustomHeader2": "CustomHeaderValue2"
+                }
+            }).done(function (data) {
+                $('#value1').text(data);
+            }).error(function (jqXHR, textStatus, errorThrown) {
+                $('#value1').text(jqXHR.responseText || textStatus);
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <select id="method">
+            <option value="get">GET</option>
+            <option value="post">POST</option>
+            <option value="put">PUT</option>
+        </select>
+        <input type="button" value="Try it" onclick="sendRequest()" />
+        <span id='value1'>(Result)</span>
+    </div>
+</body>
+</html>
