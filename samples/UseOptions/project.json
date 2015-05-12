@@ -1,12 +1,12 @@
-﻿{
+{
     "webroot": "wwwroot",
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta4",
     "dependencies": {
-        "Microsoft.AspNet.Cors": "1.0.0-*",
-        "Microsoft.AspNet.Diagnostics": "1.0.0-*",
-        "Microsoft.AspNet.Server.IIS": "1.0.0-*",
-        "Microsoft.AspNet.Server.WebListener": "1.0.0-*",
-        "Microsoft.Framework.Logging.Console": "1.0.0-*"
+        "Microsoft.AspNet.Cors": "1.0.0-beta4",
+        "Microsoft.AspNet.Diagnostics": "1.0.0-beta4",
+        "Microsoft.AspNet.Server.IIS": "1.0.0-beta4",
+        "Microsoft.AspNet.Server.WebListener": "1.0.0-beta4",
+        "Microsoft.Framework.Logging.Console": "1.0.0-beta4"
     },
     "commands": {
         "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:5000"

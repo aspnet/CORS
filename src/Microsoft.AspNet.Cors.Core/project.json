@@ -1,11 +1,11 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta4",
     "dependencies": {
-         "Microsoft.Framework.ConfigurationModel.Interfaces": "1.0.0-*",
-         "Microsoft.Framework.DependencyInjection.Interfaces": "1.0.0-*",
-         "Microsoft.Framework.OptionsModel": "1.0.0-*",
-         "Microsoft.AspNet.Http": "1.0.0-*",
-         "Microsoft.Framework.NotNullAttribute.Internal": { "version": "1.0.0-*", "type": "build" }
+         "Microsoft.Framework.ConfigurationModel.Interfaces": "1.0.0-beta4",
+         "Microsoft.Framework.DependencyInjection.Interfaces": "1.0.0-beta4",
+         "Microsoft.Framework.OptionsModel": "1.0.0-beta4",
+         "Microsoft.AspNet.Http": "1.0.0-beta4",
+         "Microsoft.Framework.NotNullAttribute.Internal": { "version": "1.0.0-beta4", "type": "build" }
     },
 
     "frameworks" : {
@@ -15,7 +15,7 @@
         },
         "dnxcore50" : { 
             "dependencies": {
-                "System.Runtime": "4.0.20-beta-*"
+                "System.Runtime": "4.0.20-beta-22816"
             }
         }
     }
