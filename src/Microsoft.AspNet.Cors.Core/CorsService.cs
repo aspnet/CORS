@@ -137,7 +137,7 @@ namespace Microsoft.AspNet.Cors.Core
 
                 if (nonSimpleAllowMethods.Length > 0)
                 {
-                    headers.Add(CorsConstants.AccessControlAllowMethods, nonSimpleAllowMethods);
+                    headers.AppendCommaSeparatedValues(CorsConstants.AccessControlAllowMethods, nonSimpleAllowMethods);
                 }
             }
 
@@ -151,7 +151,7 @@ namespace Microsoft.AspNet.Cors.Core
 
                 if (nonSimpleAllowRequestHeaders.Length > 0)
                 {
-                    headers.Add(CorsConstants.AccessControlAllowHeaders, nonSimpleAllowRequestHeaders);
+                    headers.AppendCommaSeparatedValues(CorsConstants.AccessControlAllowHeaders, nonSimpleAllowRequestHeaders);
                 }
             }
 
@@ -162,9 +162,10 @@ namespace Microsoft.AspNet.Cors.Core
                     .Where(header =>
                         !CorsConstants.SimpleResponseHeaders.Contains(header, StringComparer.OrdinalIgnoreCase))
                     .ToArray();
+
                 if (nonSimpleAllowResponseHeaders.Length > 0)
                 {
-                    headers.Add(CorsConstants.AccessControlExposeHeaders, nonSimpleAllowResponseHeaders.ToArray());
+                    headers.AppendCommaSeparatedValues(CorsConstants.AccessControlExposeHeaders, nonSimpleAllowResponseHeaders);
                 }
             }
 
