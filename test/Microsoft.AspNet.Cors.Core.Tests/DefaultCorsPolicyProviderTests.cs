@@ -7,7 +7,7 @@ using Microsoft.Framework.OptionsModel;
 using Moq;
 using Xunit;
 
-namespace Microsoft.AspNet.Cors.Core.Test
+namespace Microsoft.AspNet.Cors.Core.Tests
 {
     public class DefaultPolicyProviderTests
     {
