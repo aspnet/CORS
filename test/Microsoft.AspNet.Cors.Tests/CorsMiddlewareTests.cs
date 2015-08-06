@@ -13,7 +13,7 @@ using Microsoft.Framework.DependencyInjection;
 using Moq;
 using Xunit;
 
-namespace Microsoft.AspNet.Cors.Test
+namespace Microsoft.AspNet.Cors.Tests
 {
     public class CorsMiddlewareTests
     {
