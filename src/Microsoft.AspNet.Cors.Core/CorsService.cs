@@ -95,7 +95,8 @@ namespace Microsoft.AspNet.Cors.Core
 
             if (!policy.AllowAnyHeader &&
                 requestHeaders != null &&
-                !requestHeaders.All(header => policy.Headers.Contains(header, StringComparer.Ordinal)))
+                !requestHeaders.All(header => CorsConstants.SimpleRequestHeaders.Contains(header, StringComparer.OrdinalIgnoreCase) ||
+                                              policy.Headers.Contains(header, StringComparer.OrdinalIgnoreCase)))
             {
                 return;
             }
