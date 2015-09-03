@@ -1,25 +1,26 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta7",
     "repository": {
         "type": "git",
         "url": "https://github.com/aspnet/cors"
     },
     "dependencies": {
-         "Microsoft.Framework.Configuration.Abstractions": "1.0.0-*",
-         "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-*",
-         "Microsoft.Framework.OptionsModel": "1.0.0-*",
-         "Microsoft.AspNet.Http": "1.0.0-*",
-         "Microsoft.Framework.NotNullAttribute.Sources": { "version": "1.0.0-*", "type": "build" }
+        "Microsoft.Framework.Configuration.Abstractions": "1.0.0-beta7",
+        "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta7",
+        "Microsoft.Framework.OptionsModel": "1.0.0-beta7",
+        "Microsoft.AspNet.Http": "1.0.0-beta7",
+        "Microsoft.Framework.NotNullAttribute.Sources": {
+            "version": "1.0.0-beta7",
+            "type": "build"
+        }
     },
-
-    "frameworks" : {
-        "dnx451" : { 
-            "dependencies": {
-            }
+    "frameworks": {
+        "dnx451": {
+            "dependencies": {}
         },
-        "dnxcore50" : { 
+        "dnxcore50": {
             "dependencies": {
-                "System.Runtime": "4.0.21-beta-*"
+                "System.Runtime": "4.0.21-beta-23225"
             }
         }
     }
