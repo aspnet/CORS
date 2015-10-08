@@ -3,7 +3,7 @@
 
 using System;
 using System.Linq;
-using Microsoft.AspNet.Cors.Core;
+using Microsoft.AspNet.Cors.Infrastructure;
 
 namespace Microsoft.AspNet.Cors
 {
