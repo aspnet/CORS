@@ -1,5 +1,5 @@
 {
-    "version": "6.0.0-*",
+    "version": "6.0.0-beta8",
     "repository": {
         "type": "git",
         "url": "https://github.com/aspnet/cors"
@@ -8,14 +8,13 @@
         "warningsAsErrors": true
     },
     "dependencies": {
-         "Microsoft.AspNet.Http.Extensions": "1.0.0-*",
-         "Microsoft.Framework.Configuration.Abstractions": "1.0.0-*",
-         "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-*",
-         "Microsoft.Framework.OptionsModel": "1.0.0-*"
+        "Microsoft.AspNet.Http.Extensions": "1.0.0-beta8",
+        "Microsoft.Framework.Configuration.Abstractions": "1.0.0-beta8",
+        "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta8",
+        "Microsoft.Framework.OptionsModel": "1.0.0-beta8"
     },
-
-    "frameworks" : {
-        "dnx451" : { },
-        "dnxcore50" : { }
+    "frameworks": {
+        "dnx451": {},
+        "dnxcore50": {}
     }
 }
