@@ -60,6 +60,7 @@ namespace Microsoft.AspNet.Cors.Infrastructure
             Assert.False(corsPolicy.AllowAnyHeader);
             Assert.False(corsPolicy.AllowAnyMethod);
             Assert.False(corsPolicy.AllowAnyOrigin);
+            Assert.NotSame(originalPolicy.Origins, corsPolicy.Origins);
             Assert.Equal(originalPolicy.Origins, corsPolicy.Origins);
             Assert.Empty(corsPolicy.Headers);
             Assert.Empty(corsPolicy.Methods);
