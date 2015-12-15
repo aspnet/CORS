@@ -22,7 +22,7 @@ namespace CorsMiddlewareWebSite
         /// Echo the request's path in the response. Does not invoke later middleware in the pipeline.
         /// </summary>
         /// <param name="context">The <see cref="HttpContext"/> of the current request.</param>
-        /// <returns>A completed <see cref="Task"/>.</returns>
+        /// <returns>A <see cref="Task"/> that completes when writing to the response is done.</returns>
         public Task Invoke(HttpContext context)
         {
             if (context == null)
@@ -32,9 +32,7 @@ namespace CorsMiddlewareWebSite
 
             context.Response.ContentType = "text/plain; charset=utf-8";
             var path = context.Request.PathBase + context.Request.Path + context.Request.QueryString;
-            context.Response.WriteAsync(path, Encoding.UTF8);
-
-            return Task.FromResult(false);
+            return context.Response.WriteAsync(path, Encoding.UTF8);
         }
     }
 }
