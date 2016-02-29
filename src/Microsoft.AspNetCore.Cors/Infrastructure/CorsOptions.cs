@@ -18,13 +18,13 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// <summary>
         /// Constructs a new CorsOptions.
         /// </summary>
-        public CorsOptions() : this(null) { }
+        public CorsOptions() { }
 
         /// <summary>
         /// Constructs and configures a new CorsOptions.
         /// </summary>
         /// <param name="configureOptions">The configuration actions that will be applied.</param>
-        public CorsOptions(IEnumerable<IConfigureOptions<CorsOptions>> configureOptions)
+        public CorsOptions(IEnumerable<IConfigureOptions<CorsOptions>> configureOptions) : this()
         {
             if (configureOptions != null)
             {
