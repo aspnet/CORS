@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// Constructs and configures a new CorsOptions.
         /// </summary>
         /// <param name="configureOptions">The configuration actions that will be applied.</param>
-        public CorsOptions(IEnumerable<IConfigureOptions<CorsOptions>> configureOptions = null)
+        public CorsOptions(IEnumerable<IConfigureOptions<CorsOptions>> configureOptions)
         {
             if (configureOptions != null)
             {
