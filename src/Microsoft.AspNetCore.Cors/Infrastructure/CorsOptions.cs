@@ -26,12 +26,14 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// <param name="configureOptions">The configuration actions that will be applied.</param>
         public CorsOptions(IEnumerable<IConfigureOptions<CorsOptions>> configureOptions) : this()
         {
-            if (configureOptions != null)
+            if (configureOptions == null)
             {
-                foreach (var configure in configureOptions)
-                {
-                    configure.Configure(this);
-                }
+                throw new ArgumentNullException(nameof(configureOptions));
+            }
+
+            foreach (var configure in configureOptions)
+            {
+                configure.Configure(this);
             }
         }
 
