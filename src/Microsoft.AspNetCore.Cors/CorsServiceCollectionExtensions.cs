@@ -23,10 +23,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddOptions();
-
-            services.TryAdd(ServiceDescriptor.Transient<ICorsService, CorsService>());
-            services.TryAdd(ServiceDescriptor.Transient<ICorsPolicyProvider, DefaultCorsPolicyProvider>());
+            services.TryAddSingleton<CorsOptions>();
+            services.TryAddTransient<ICorsService, CorsService>();
+            services.TryAddTransient<ICorsPolicyProvider, DefaultCorsPolicyProvider>();
         }
 
         /// <summary>

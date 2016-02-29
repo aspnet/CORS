@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.AspNetCore.Cors.Infrastructure
@@ -22,14 +21,14 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// Creates a new instance of the <see cref="CorsService"/>.
         /// </summary>
         /// <param name="options">The option model representing <see cref="CorsOptions"/>.</param>
-        public CorsService(IOptions<CorsOptions> options)
+        public CorsService(CorsOptions options)
         {
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
-            _options = options.Value;
+            _options = options;
         }
 
         /// <summary>

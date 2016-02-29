@@ -17,9 +17,9 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// Creates a new instance of <see cref="DefaultCorsPolicyProvider"/>.
         /// </summary>
         /// <param name="options">The options configured for the application.</param>
-        public DefaultCorsPolicyProvider(IOptions<CorsOptions> options)
+        public DefaultCorsPolicyProvider(CorsOptions options)
         {
-            _options = options.Value;
+            _options = options;
         }
 
         /// <inheritdoc />
