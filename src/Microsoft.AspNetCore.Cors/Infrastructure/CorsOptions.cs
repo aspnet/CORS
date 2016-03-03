@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Cors.Infrastructure
 {
@@ -13,6 +14,28 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
     {
         private string _defaultPolicyName = "__DefaultCorsPolicy";
         private IDictionary<string, CorsPolicy> PolicyMap { get; } = new Dictionary<string, CorsPolicy>();
+
+        /// <summary>
+        /// Constructs a new CorsOptions.
+        /// </summary>
+        public CorsOptions() { }
+
+        /// <summary>
+        /// Constructs and configures a new CorsOptions.
+        /// </summary>
+        /// <param name="configureOptions">The configuration actions that will be applied.</param>
+        public CorsOptions(IEnumerable<IConfigureOptions<CorsOptions>> configureOptions) : this()
+        {
+            if (configureOptions == null)
+            {
+                throw new ArgumentNullException(nameof(configureOptions));
+            }
+
+            foreach (var configure in configureOptions)
+            {
+                configure.Configure(this);
+            }
+        }
 
         public string DefaultPolicyName
         {

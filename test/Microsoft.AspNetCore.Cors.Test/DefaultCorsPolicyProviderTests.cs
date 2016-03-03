@@ -17,11 +17,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             var policy = new CorsPolicy();
             options.AddPolicy(options.DefaultPolicyName, policy);
 
-            var corsOptions = new TestCorsOptions
-            {
-                Value = options
-            };
-            var policyProvider = new DefaultCorsPolicyProvider(corsOptions);
+            var policyProvider = new DefaultCorsPolicyProvider(options);
 
             // Act 
             var actualPolicy = await policyProvider.GetPolicyAsync(new DefaultHttpContext(), policyName: null);
@@ -40,11 +36,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             var policy = new CorsPolicy();
             options.AddPolicy(policyName, policy);
 
-            var corsOptions = new TestCorsOptions
-            {
-                Value = options
-            };
-            var policyProvider = new DefaultCorsPolicyProvider(corsOptions);
+            var policyProvider = new DefaultCorsPolicyProvider(options);
 
             // Act 
             var actualPolicy = await policyProvider.GetPolicyAsync(new DefaultHttpContext(), policyName);
