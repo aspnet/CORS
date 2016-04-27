@@ -872,7 +872,90 @@ namespace Microsoft.AspNet.Cors.Infrastructure
             Assert.Equal("30", httpContext.Response.Headers["Access-Control-Max-Age"]);
         }
 
+        #region Wildcard Subdomain
 
+        [Fact]
+        public void EvaluatePolicy_WildCardSubdomain_MatchOnRoot_ReturnsValidResult()
+        {
+            // Arrange
+            var corsService = new CorsService(new TestCorsOptions());
+            var requestContext = GetHttpContext(origin: "http://example.com");
+            var policy = new CorsPolicy();
+            policy.Origins.Add("http://*.example.com");
+
+            // Act
+            var result = corsService.EvaluatePolicy(requestContext, policy);
+
+            // Assert
+            Assert.Equal("http://example.com", result.AllowedOrigin);
+        }
+
+        [Fact]
+        public void EvaluatePolicy_WildCardSubdomain_MatchOnSubdomainAndRoot_ReturnsValidResult()
+        {
+            // Arrange
+            var corsService = new CorsService(new TestCorsOptions());
+            var requestContext = GetHttpContext(origin: "http://abcd.example.com");
+            var policy = new CorsPolicy();
+            policy.Origins.Add("http://*.example.com");
+
+            // Act
+            var result = corsService.EvaluatePolicy(requestContext, policy);
+
+            // Assert
+            Assert.Equal("http://abcd.example.com", result.AllowedOrigin);
+        }
+
+        [Fact]
+        public void EvaluatePolicy_WildCardSubdomain_MatchOnMultiSubdomains_ReturnsValidResult()
+        {
+            // Arrange
+            var corsService = new CorsService(new TestCorsOptions());
+            var requestContext = GetHttpContext(origin: "http://a.b.c.d.example.com");
+            var policy = new CorsPolicy();
+            policy.Origins.Add("http://*.example.com");
+
+            // Act
+            var result = corsService.EvaluatePolicy(requestContext, policy);
+
+            // Assert
+            Assert.Equal("http://a.b.c.d.example.com", result.AllowedOrigin);
+        }
+
+        [Fact]
+        public void EvaluatePolicy_WildCardSubdomain_NoMatchOnRoot_ReturnsInvalidResult()
+        {
+            // Arrange
+            var corsService = new CorsService(new TestCorsOptions());
+            var requestContext = GetHttpContext(origin: "http://a.anotherdomain.com");
+            var policy = new CorsPolicy();
+            policy.Origins.Add("http://*.example.com");
+
+            // Act
+            var result = corsService.EvaluatePolicy(requestContext, policy);
+
+            // Assert
+            Assert.Null(result.AllowedOrigin);
+
+        }
+
+        [Fact]
+        public void EvaluatePolicy_WildCardSubdomain_NoMatchOnScheme_ReturnsInvalidResult()
+        {
+            // Arrange
+            var corsService = new CorsService(new TestCorsOptions());
+            var requestContext = GetHttpContext(origin: "https://a.example.com");//https
+            var policy = new CorsPolicy();
+            policy.Origins.Add("http://*.example.com");//http
+
+            // Act
+            var result = corsService.EvaluatePolicy(requestContext, policy);
+
+            // Assert
+            Assert.Null(result.AllowedOrigin);
+        }
+
+        #endregion
 
         private static HttpContext GetHttpContext(
             string method = null,
