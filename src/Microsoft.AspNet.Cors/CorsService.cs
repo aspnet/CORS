@@ -260,17 +260,19 @@ namespace Microsoft.AspNet.Cors.Infrastructure
 
         private bool IsWildCardSubdomainMatch(string origin, CorsPolicy policy)
         {
+            //CANNOT USE System.Text.RegularExpression since it does not exist in .net platform 5.4 (which the project.json targets)
+            // '*' char is not valid for creation of a URI object so we replace it just for this comparison
+            var actualOriginUri = new Uri(origin);
+            var actualOriginRootDomain = GetRootDomain(actualOriginUri);
+
             foreach (var o in policy.Origins)
             {
                 if (!o.Contains("*"))
                     continue;
 
-                //CANNOT USE System.Text.RegularExpression since it does not exist in .net platform 5.4 (which the project.json targets)
-                // '*' char is not valid for creation of a URI object so we replace it just for this comparison
                 var allowedOriginUri = new Uri(o.Replace("*", "SOMELETTERS"));
-                var actualOriginUri = new Uri(origin);
                 if (allowedOriginUri.Scheme == actualOriginUri.Scheme &&
-                    GetRootDomain(allowedOriginUri) == GetRootDomain(actualOriginUri))
+                    actualOriginRootDomain == GetRootDomain(allowedOriginUri))
                     return true;
             }
 
