@@ -82,7 +82,7 @@ namespace Microsoft.AspNet.Cors.Infrastructure
         public virtual void EvaluateRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.Origins.Contains(origin))
+            if (!OriginIsAllowed(origin, policy))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace Microsoft.AspNet.Cors.Infrastructure
         public virtual void EvaluatePreflightRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.Origins.Contains(origin))
+            if (!OriginIsAllowed(origin, policy))
             {
                 return;
             }
@@ -214,6 +214,17 @@ namespace Microsoft.AspNet.Cors.Infrastructure
             }
         }
 
+        protected virtual bool OriginIsAllowed(string origin, CorsPolicy policy)
+        {
+            if (!string.IsNullOrWhiteSpace(origin) && 
+                (policy.AllowAnyOrigin ||
+                 policy.Origins.Contains(origin) ||
+                 IsWildCardSubdomainMatch(origin, policy)))
+                return true;
+
+            return false;
+        }
+
         private void AddOriginToResult(string origin, CorsPolicy policy, CorsResult result)
         {
             if (policy.AllowAnyOrigin)
@@ -228,7 +239,7 @@ namespace Microsoft.AspNet.Cors.Infrastructure
                     result.AllowedOrigin = CorsConstants.AnyOrigin;
                 }
             }
-            else if (policy.Origins.Contains(origin))
+            else
             {
                 result.AllowedOrigin = origin;
             }
@@ -245,6 +256,42 @@ namespace Microsoft.AspNet.Cors.Infrastructure
             {
                 target.Add(current);
             }
+        }
+
+        private bool IsWildCardSubdomainMatch(string origin, CorsPolicy policy)
+        {
+            //CANNOT USE System.Text.RegularExpression since it does not exist in .net platform 5.4 (which the project.json targets)
+            // '*' char is not valid for creation of a URI object so we replace it just for this comparison
+            var actualOriginUri = new Uri(origin);
+            var actualOriginRootDomain = GetRootDomain(actualOriginUri);
+
+            foreach (var o in policy.Origins)
+            {
+                if (!o.Contains("*"))
+                    continue;
+
+                var allowedOriginUri = new Uri(o.Replace("*", "SOMELETTERS"));
+                if (allowedOriginUri.Scheme == actualOriginUri.Scheme &&
+                    actualOriginRootDomain == GetRootDomain(allowedOriginUri))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private string GetRootDomain(Uri uri)
+        {
+            //Got this snippet here http://stackoverflow.com/questions/16473838/get-domain-name-of-a-url-in-c-sharp-net
+            var host = uri.Host;
+            int index = host.LastIndexOf('.'), last = 3;
+
+            while (index > 0 && index >= last - 3)
+            {
+                last = index;
+                index = host.LastIndexOf('.', last - 1);
+            }
+
+            return host.Substring(index + 1);
         }
     }
 }
