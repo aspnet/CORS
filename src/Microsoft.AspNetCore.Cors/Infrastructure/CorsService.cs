@@ -66,7 +66,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
 
             var corsResult = new CorsResult();
             var accessControlRequestMethod = context.Request.Headers[CorsConstants.AccessControlRequestMethod];
-            if (string.Equals(context.Request.Method, CorsConstants.PreflightHttpMethod, StringComparison.Ordinal) &&
+            if (string.Equals(context.Request.Method, CorsConstants.PreflightHttpMethod, StringComparison.OrdinalIgnoreCase) &&
                 !StringValues.IsNullOrEmpty(accessControlRequestMethod))
             {
                 EvaluatePreflightRequest(context, policy, corsResult);
