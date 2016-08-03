@@ -109,7 +109,9 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             var requestHeaders =
                 context.Request.Headers.GetCommaSeparatedValues(CorsConstants.AccessControlRequestHeaders);
 
-            if (!policy.AllowAnyMethod && !policy.Methods.Contains(accessControlRequestMethod))
+            if (!policy.AllowAnyMethod
+                && !policy.Methods.Any((method) =>
+                string.Equals(method, accessControlRequestMethod, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }
