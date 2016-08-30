@@ -540,6 +540,23 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         [Fact]
+        public void ApplyResult_AllowWildCardOrigin_AllowOriginHeaderAdded()
+        {
+            // Arrange
+            var corsService = new CorsService(new TestCorsOptions());
+            var requestContext = GetHttpContext(origin: "http://subdomain.example.com");
+            var policy = new CorsPolicy();
+            policy.Origins.Add("http://*.example.com");
+
+            // Act
+            var result = corsService.EvaluatePolicy(requestContext, policy);
+
+            // Assert
+            Assert.Equal("http://subdomain.example.com", result.AllowedOrigin);
+        }
+
+
+        [Fact]
         public void ApplyResult_AllowCredentials_AllowCredentialsHeaderAdded()
         {
             // Arrange

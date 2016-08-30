@@ -82,7 +82,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         public virtual void EvaluateRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.Origins.Contains(origin))
+            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.RegularOrigins.Any(r => r.IsMatch(origin)))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         public virtual void EvaluatePreflightRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.Origins.Contains(origin))
+            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.RegularOrigins.Any(r => r.IsMatch(origin)))
             {
                 return;
             }
@@ -242,7 +242,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                     result.AllowedOrigin = CorsConstants.AnyOrigin;
                 }
             }
-            else if (policy.Origins.Contains(origin))
+            else if (policy.RegularOrigins.Any(r => r.IsMatch(origin)))
             {
                 result.AllowedOrigin = origin;
             }
