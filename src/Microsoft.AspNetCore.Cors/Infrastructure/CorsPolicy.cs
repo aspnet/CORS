@@ -3,9 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Microsoft.AspNetCore.Cors.Infrastructure
 {
@@ -82,13 +80,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// <summary>
         /// Gets the origins that are allowed to access the resource.
         /// </summary>
-        public ObservableCollection<string> Origins { get; } = new ObservableCollection<string>();
-
-        /// <summary>
-        /// Gets the regular origins that are allowed to access the resource.
-        /// </summary>
-        public IList<Regex> RegularOrigins { get; } = new List<Regex>();
-
+        public IList<string> Origins { get; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the <see cref="TimeSpan"/> for which the results of a preflight request can be cached.
@@ -148,24 +140,6 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             builder.Append(string.Join(",", ExposedHeaders));
             builder.Append("}");
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="CorsPolicy"/>.
-        /// </summary>
-        public CorsPolicy()
-        {
-            // Regenerate 'RegularOrigins' every time the 'Origins' has changed.
-            Origins.CollectionChanged += (sender, e) =>
-            {
-                RegularOrigins.Clear();
-
-                foreach (var origin in Origins)
-                {
-                    var pattern = $"^{Regex.Escape(origin).Replace(@"\*", ".*")}$";
-                    RegularOrigins.Add(new Regex(pattern));
-                }
-            };
         }
     }
 }

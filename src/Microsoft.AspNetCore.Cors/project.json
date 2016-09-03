@@ -23,9 +23,7 @@
     "Microsoft.AspNetCore.Http.Extensions": "1.1.0-*",
     "Microsoft.Extensions.Configuration.Abstractions": "1.1.0-*",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0-*",
-    "Microsoft.Extensions.Options": "1.1.0-*",
-    "System.ObjectModel": "4.0.12",
-    "System.Text.RegularExpressions": "4.1.0"
+    "Microsoft.Extensions.Options": "1.1.0-*"
   },
   "frameworks": {
     "net451": {},

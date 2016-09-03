@@ -82,7 +82,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         public virtual void EvaluateRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.RegularOrigins.Any(r => r.IsMatch(origin)))
+            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !(policy.Origins.Contains(origin) || IsWildCardMatch(origin, policy)))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         public virtual void EvaluatePreflightRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !policy.RegularOrigins.Any(r => r.IsMatch(origin)))
+            if (StringValues.IsNullOrEmpty(origin) || !policy.AllowAnyOrigin && !(policy.Origins.Contains(origin) || IsWildCardMatch(origin, policy)))
             {
                 return;
             }
@@ -242,7 +242,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                     result.AllowedOrigin = CorsConstants.AnyOrigin;
                 }
             }
-            else if (policy.RegularOrigins.Any(r => r.IsMatch(origin)))
+            else if (policy.Origins.Contains(origin) || IsWildCardMatch(origin, policy))
             {
                 result.AllowedOrigin = origin;
             }
@@ -259,6 +259,20 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             {
                 target.Add(current);
             }
+        }
+
+        private bool IsWildCardMatch(string origin, CorsPolicy policy)
+        {
+            foreach(var o in policy.Origins)
+            {
+                if (o.Contains("*"))
+                {
+                    var index = o.IndexOf("*");
+                    if (origin.StartsWith(o.Substring(0, index)) && origin.EndsWith(o.Substring(index + 1)))
+                        return true;
+                }
+            }
+            return false;
         }
     }
 }
