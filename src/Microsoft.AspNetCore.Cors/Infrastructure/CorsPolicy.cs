@@ -15,6 +15,14 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         private TimeSpan? _preflightMaxAge;
 
         /// <summary>
+        /// Default constructor for a CorsPolicy
+        /// </summary>
+        public CorsPolicy()
+        {
+            this.IsOriginAllowed = DefaultIsOriginAllowed;
+        }
+
+        /// <summary>
         /// Gets a value indicating if all headers are allowed.
         /// </summary>
         public bool AllowAnyHeader
@@ -61,6 +69,11 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 return true;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a function which evaluates whether an origin is allowed
+        /// </summary>
+        public Func<string, bool> IsOriginAllowed { get; set; }
 
         /// <summary>
         /// Gets the headers that the resource might use and can be exposed.
@@ -140,6 +153,11 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             builder.Append(string.Join(",", ExposedHeaders));
             builder.Append("}");
             return builder.ToString();
+        }
+
+        private bool DefaultIsOriginAllowed(string origin)
+        {
+            return Origins.Contains(origin);
         }
     }
 }

@@ -91,6 +91,18 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         /// <summary>
+        /// Adds the specified <paramref name="isOriginAllowed"/> to the policy.
+        /// </summary>
+        /// <param name="isOriginAllowed">The function used by the policy to evaluate if an origin is allowed.</param>
+        /// <returns>The current policy builder</returns>
+        public CorsPolicyBuilder WithIsOriginAllowed(Func<string, bool> isOriginAllowed)
+        {
+            _policy.IsOriginAllowed = isOriginAllowed;
+
+            return this;
+        }
+
+        /// <summary>
         /// Sets the policy to allow credentials.
         /// </summary>
         /// <returns>The current policy builder</returns>
@@ -144,6 +156,17 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         /// <summary>
+        /// Enables the policy to be configured with wildcarded domains that will then allow
+        /// CORS from any matching subomdain
+        /// </summary>
+        /// <returns>The current policy builder</returns>
+        public CorsPolicyBuilder AllowWildcardSubdomains()
+        {
+            _policy.IsOriginAllowed = _policy.IsOriginAnAllowedSubdomain;
+            return this;
+        }
+
+        /// <summary>
         /// Sets the preflightMaxAge for the underlying policy.
         /// </summary>
         /// <param name="preflightMaxAge">A positive <see cref="TimeSpan"/> indicating the time a preflight
@@ -180,6 +203,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             WithHeaders(policy.Headers.ToArray());
             WithExposedHeaders(policy.ExposedHeaders.ToArray());
             WithMethods(policy.Methods.ToArray());
+            WithIsOriginAllowed(policy.IsOriginAllowed);
 
             if (policy.PreflightMaxAge.HasValue)
             {
