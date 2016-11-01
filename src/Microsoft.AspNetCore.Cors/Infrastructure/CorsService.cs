@@ -97,7 +97,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         public virtual void EvaluateRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (!IsOriginAllowed(policy, origin))
+            if (IsOriginAllowed(policy, origin))
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         public virtual void EvaluatePreflightRequest(HttpContext context, CorsPolicy policy, CorsResult result)
         {
             var origin = context.Request.Headers[CorsConstants.Origin];
-            if (!IsOriginAllowed(policy, origin))
+            if (IsOriginAllowed(policy, origin))
             {
                 return;
             }
