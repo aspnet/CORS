@@ -40,7 +40,15 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         {
             foreach (var req in origins)
             {
-                _policy.Origins.Add(req);
+                if (req.StartsWith("//"))
+                {
+                    _policy.Origins.Add("http:" + req);
+                    _policy.Origins.Add("https:" + req);
+                }
+                else
+                {
+                    _policy.Origins.Add(req);
+                }
             }
 
             return this;
