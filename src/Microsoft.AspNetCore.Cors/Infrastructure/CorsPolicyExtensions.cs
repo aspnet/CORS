@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             return policy.Origins
                 .Where(o => o.Contains(_WildcardSubdomain))
                 .Select(CreateDomainUri)
-                .Any(domain => originUri.IsSubdomainOf(domain));
+                .Any(domain => UriHelpers.IsSubdomainOf(originUri, domain));
         }
 
         private static Uri CreateDomainUri(string origin)

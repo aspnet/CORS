@@ -24,23 +24,41 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         [Theory]
-        [InlineData("http://sub.domain", "http://*.domain", true)]
-        [InlineData("http://sub.sub.domain", "http://*.domain", true)]
-        [InlineData("http://sub.domain", "http://domain", false)]
-        [InlineData("http://sub.domain", "http://domain.*", false)]
-        [InlineData("http://sub.domain.hacker", "http://*.domain", false)]
-        [InlineData("https://sub.domain", "http://*.domain", false)]
-        public void IsOriginAnAllowedSubdomain(string origin, string allowedOrigin, bool expected)
+        [InlineData("http://sub.domain", "http://*.domain")]
+        [InlineData("http://sub.sub.domain", "http://*.domain")]
+        [InlineData("http://sub.sub.domain", "http://*.sub.domain")]
+        [InlineData("http://sub.domain:4567", "http://*.domain:4567")]
+        public void IsOriginAnAllowedSubdomain_ReturnsTrue_WhenASubdomain(string origin, string allowedOrigin)
         {
             // Arrange
             var policy = new CorsPolicy();
             policy.Origins.Add(allowedOrigin);
 
             // Act
-            var actual = policy.IsOriginAnAllowedSubdomain(origin);
+            var isAllowed = policy.IsOriginAnAllowedSubdomain(origin);
 
             // Assert
-            Assert.Equal(actual, expected);
+            Assert.True(isAllowed);
+        }
+
+        [Theory]
+        [InlineData("http://domain", "http://*.domain")]
+        [InlineData("http://sub.domain", "http://domain")]
+        [InlineData("http://sub.domain:1234", "http://*.domain:5678")]
+        [InlineData("http://sub.domain", "http://domain.*")]
+        [InlineData("http://sub.domain.hacker", "http://*.domain")]
+        [InlineData("https://sub.domain", "http://*.domain")]
+        public void IsOriginAnAllowedSubdomain_ReturnsFalse_WhenNotASubdomain(string origin, string allowedOrigin)
+        {
+            // Arrange
+            var policy = new CorsPolicy();
+            policy.Origins.Add(allowedOrigin);
+
+            // Act
+            var isAllowed = policy.IsOriginAnAllowedSubdomain(origin);
+
+            // Assert
+            Assert.False(isAllowed);
         }
     }
 }

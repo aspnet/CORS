@@ -5,14 +5,15 @@ using System;
 
 namespace Microsoft.AspNetCore.Cors.Infrastructure
 {
-    internal static class UriExtensions
+    internal static class UriHelpers
     {
-        public static bool IsSubdomainOf(this Uri subdomain, Uri domain)
+        public static bool IsSubdomainOf(Uri subdomain, Uri domain)
         {
             return subdomain.IsAbsoluteUri 
                 && domain.IsAbsoluteUri
                 && subdomain.Scheme == domain.Scheme
-                && subdomain.Host.EndsWith(domain.Host);
+                && subdomain.Port == domain.Port
+                && subdomain.Host.EndsWith($".{domain.Host}");
         }
     }
 }

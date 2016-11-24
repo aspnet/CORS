@@ -144,14 +144,14 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         [Fact]
-        public void WithIsOriginAllowed_AddsIsOriginAllowed()
+        public void SetIsOriginAllowed_AddsIsOriginAllowed()
         {
             // Arrange
             var builder = new CorsPolicyBuilder();
             Func<string, bool> isOriginAllowed = origin => true;
 
             // Act
-            builder.WithIsOriginAllowed(isOriginAllowed);
+            builder.SetIsOriginAllowed(isOriginAllowed);
 
             // Assert
             var corsPolicy = builder.Build();
@@ -159,13 +159,13 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         [Fact]
-        public void AllowWildcardSubdomains_AllowsWildcardSubdomains()
+        public void SetIsOriginAllowedToAllowWildcardSubdomains_AllowsWildcardSubdomains()
         {
             // Arrange
             var builder = new CorsPolicyBuilder("http://*.example.com");
 
             // Act
-            builder.AllowWildcardSubdomains();
+            builder.SetIsOriginAllowedToAllowWildcardSubdomains();
 
             // Assert
             var corsPolicy = builder.Build();
