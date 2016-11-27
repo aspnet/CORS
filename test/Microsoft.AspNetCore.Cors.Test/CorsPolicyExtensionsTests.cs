@@ -46,6 +46,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         [InlineData("http://sub.domain", "http://domain")]
         [InlineData("http://sub.domain:1234", "http://*.domain:5678")]
         [InlineData("http://sub.domain", "http://domain.*")]
+        [InlineData("http://sub.sub.domain", "http://sub.*.domain")]
         [InlineData("http://sub.domain.hacker", "http://*.domain")]
         [InlineData("https://sub.domain", "http://*.domain")]
         public void IsOriginAnAllowedSubdomain_ReturnsFalse_WhenNotASubdomain(string origin, string allowedOrigin)

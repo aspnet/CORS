@@ -13,7 +13,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 && domain.IsAbsoluteUri
                 && subdomain.Scheme == domain.Scheme
                 && subdomain.Port == domain.Port
-                && subdomain.Host.EndsWith($".{domain.Host}");
+                && subdomain.Host.EndsWith($".{domain.Host}", StringComparison.Ordinal);
         }
     }
 }

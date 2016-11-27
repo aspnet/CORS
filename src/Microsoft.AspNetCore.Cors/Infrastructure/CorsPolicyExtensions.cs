@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             }
             var originUri = new Uri(origin, UriKind.Absolute);
             return policy.Origins
-                .Where(o => o.Contains(_WildcardSubdomain))
+                .Where(o => o.Contains($"://{_WildcardSubdomain}"))
                 .Select(CreateDomainUri)
                 .Any(domain => UriHelpers.IsSubdomainOf(originUri, domain));
         }
