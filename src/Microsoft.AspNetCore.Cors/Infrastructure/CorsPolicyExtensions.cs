@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
 {
     internal static class CorsPolicyExtensions
     {
-        private static string _WildcardSubdomain = "*.";
+        private const string _WildcardSubdomain = "*.";
 
         public static bool IsOriginAnAllowedSubdomain(this CorsPolicy policy, string origin)
         {
@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
 
         private static Uri CreateDomainUri(string origin)
         {
-            return new Uri(origin.Replace(_WildcardSubdomain, ""), UriKind.Absolute);
+            return new Uri(origin.Replace(_WildcardSubdomain, string.Empty), UriKind.Absolute);
         }
     }
 }

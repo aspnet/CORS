@@ -15,11 +15,11 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         private TimeSpan? _preflightMaxAge;
 
         /// <summary>
-        /// Default constructor for a CorsPolicy
+        /// Default constructor for a CorsPolicy.
         /// </summary>
         public CorsPolicy()
         {
-            this.IsOriginAllowed = DefaultIsOriginAllowed;
+            IsOriginAllowed = DefaultIsOriginAllowed;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         /// <summary>
-        /// Gets or sets a function which evaluates whether an origin is allowed
+        /// Gets or sets a function which evaluates whether an origin is allowed.
         /// </summary>
         public Func<string, bool> IsOriginAllowed { get; set; }
 
