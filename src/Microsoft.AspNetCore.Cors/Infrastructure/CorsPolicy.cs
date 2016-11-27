@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Microsoft.AspNetCore.Cors.Infrastructure
@@ -157,7 +158,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
 
         private bool DefaultIsOriginAllowed(string origin)
         {
-            return Origins.Contains(origin);
+            return Origins.Contains(origin, StringComparer.OrdinalIgnoreCase);
         }
     }
 }
