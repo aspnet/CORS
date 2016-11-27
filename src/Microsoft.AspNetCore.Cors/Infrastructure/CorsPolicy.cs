@@ -158,7 +158,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
 
         private bool DefaultIsOriginAllowed(string origin)
         {
-            return Origins.Contains(origin, StringComparer.OrdinalIgnoreCase);
+            return Origins.Contains(origin, StringComparer.Ordinal);
         }
     }
 }
