@@ -889,7 +889,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             var requestContext = GetHttpContext(origin: "http://example.com");
             var policy = new CorsPolicy();
             policy.Origins.Add("http://example.com");
-            policy.Origins.Add("bar");
+            policy.Origins.Add("http://example-two.com");
 
             // Act
             var result = corsService.EvaluatePolicy(requestContext, policy);
@@ -899,9 +899,26 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             Assert.True(result.VaryByOrigin);
         }
 
+		[Fact]
+		public void EvaluatePolicy_MultiOriginsPolicy_NoMatchingOrigin_ReturnsInvalidResult()
+		{
+			// Arrange
+			var corsService = new CorsService(new TestCorsOptions());
+			var requestContext = GetHttpContext(origin: "http://example.com");
+			var policy = new CorsPolicy();
+			policy.Origins.Add("http://example-two.com");
+			policy.Origins.Add("http://example-three.com");
+
+			// Act
+			var result = corsService.EvaluatePolicy(requestContext, policy);
+
+			// Assert
+			Assert.Null(result.AllowedOrigin);
+			Assert.False(result.VaryByOrigin);
+		}
 
 
-        private static HttpContext GetHttpContext(
+		private static HttpContext GetHttpContext(
             string method = null,
             string origin = null,
             string accessControlRequestMethod = null,
