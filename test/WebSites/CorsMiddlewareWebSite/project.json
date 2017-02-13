@@ -3,16 +3,16 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Cors": "1.0.1",
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.1",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.2"
+    "Microsoft.AspNetCore.Cors": "1.0.2",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.2",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.3"
   },
   "frameworks": {
     "net451": {},
     "netcoreapp1.0": {
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.3",
+          "version": "1.0.4",
           "type": "platform"
         }
       },
@@ -28,7 +28,7 @@
   },
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
-      "version": "1.0.0-*",
+      "version": "1.0.0-preview4-final",
       "imports": "portable-net45+wp80+win8+wpa81+dnxcore50"
     }
   },
