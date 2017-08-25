@@ -4,7 +4,7 @@
     "CorsMiddlewareWebSite": "1.0.0-*",
     "dotnet-test-xunit": "2.2.0-*",
     "Microsoft.AspNetCore.Cors": "1.1.2",
-    "Microsoft.AspNetCore.TestHost": "1.1.2",
+    "Microsoft.AspNetCore.TestHost": "1.1.3",
     "Microsoft.Extensions.Logging.Testing": "1.1.2",
     "Moq": "4.6.36-*",
     "xunit": "2.2.0-*"
