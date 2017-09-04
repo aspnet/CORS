@@ -253,14 +253,13 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             var middleware = new CorsMiddleware(
                 Mock.Of<RequestDelegate>(),
                 corsService,
-                mockProvider.Object,
                 policyName: null);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Headers.Add(CorsConstants.Origin, new[] { "http://example.com" });
 
             // Act
-            await middleware.Invoke(httpContext);
+            await middleware.Invoke(httpContext, mockProvider.Object);
 
             // Assert
             mockProvider.Verify(
@@ -281,14 +280,13 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             var middleware = new CorsMiddleware(
                 Mock.Of<RequestDelegate>(),
                 corsService,
-                mockProvider.Object,
                 policyName: null);
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Headers.Add(CorsConstants.Origin, new[] { "http://example.com" });
 
             // Act
-            await middleware.Invoke(httpContext);
+            await middleware.Invoke(httpContext, mockProvider.Object);
 
             // Assert
             Assert.Equal(200, httpContext.Response.StatusCode);

@@ -15,7 +15,6 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
     {
         private readonly RequestDelegate _next;
         private readonly ICorsService _corsService;
-        private readonly ICorsPolicyProvider _corsPolicyProvider;
         private readonly CorsPolicy _policy;
         private readonly string _corsPolicyName;
 
@@ -24,12 +23,10 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// </summary>
         /// <param name="next">The next middleware in the pipeline.</param>
         /// <param name="corsService">An instance of <see cref="ICorsService"/>.</param>
-        /// <param name="policyProvider">A policy provider which can get an <see cref="CorsPolicy"/>.</param>
         /// <param name="policyName">An optional name of the policy to be fetched.</param>
         public CorsMiddleware(
             RequestDelegate next,
             ICorsService corsService,
-            ICorsPolicyProvider policyProvider,
             string policyName)
         {
             if (next == null)
@@ -42,14 +39,8 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 throw new ArgumentNullException(nameof(corsService));
             }
 
-            if (policyProvider == null)
-            {
-                throw new ArgumentNullException(nameof(policyProvider));
-            }
-
             _next = next;
             _corsService = corsService;
-            _corsPolicyProvider = policyProvider;
             _corsPolicyName = policyName;
         }
 
@@ -85,11 +76,11 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, ICorsPolicyProvider corsPolicyProvider)
         {
             if (context.Request.Headers.ContainsKey(CorsConstants.Origin))
             {
-                var corsPolicy = _policy ?? await _corsPolicyProvider?.GetPolicyAsync(context, _corsPolicyName);
+                var corsPolicy = _policy ?? await corsPolicyProvider.GetPolicyAsync(context, _corsPolicyName);
                 if (corsPolicy != null)
                 {
                     var corsResult = _corsService.EvaluatePolicy(context, corsPolicy);
