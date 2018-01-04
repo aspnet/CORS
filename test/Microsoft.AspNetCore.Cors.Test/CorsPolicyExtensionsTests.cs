@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         {
             // Arrange
             var policy = new CorsPolicy();
-            policy.Origins.Add("http://sub.domain");
+            policy.Origins.Add("http://*.domain");
 
             // Act
             var actual = policy.IsOriginAnAllowedSubdomain(malformedOrigin);
