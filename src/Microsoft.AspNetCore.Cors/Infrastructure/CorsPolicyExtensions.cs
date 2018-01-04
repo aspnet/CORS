@@ -17,19 +17,15 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 return true;
             }
 
-            Uri.TryCreate(origin, UriKind.Absolute, out var originUri);
-
-            if (originUri != null)
+            if (Uri.TryCreate(origin, UriKind.Absolute, out var originUri))
             {
                 return policy.Origins
                     .Where(o => o.Contains($"://{_WildcardSubdomain}"))
                     .Select(CreateDomainUri)
                     .Any(domain => UriHelpers.IsSubdomainOf(originUri, domain));
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         private static Uri CreateDomainUri(string origin)
