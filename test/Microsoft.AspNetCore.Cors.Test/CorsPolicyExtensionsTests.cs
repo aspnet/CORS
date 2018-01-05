@@ -29,6 +29,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         [InlineData("http://")]
         [InlineData("http://*")]
         [InlineData("http://.domain")]
+        [InlineData("http://.domain/hello")]
         public void IsOriginAnAllowedSubdomain_ReturnsFalseIfOriginIsMalformedUri(string malformedOrigin)
         {
             // Arrange
