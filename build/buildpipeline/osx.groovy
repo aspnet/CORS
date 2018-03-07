@@ -5,6 +5,13 @@ simpleNode('OSX10.12','latest') {
         checkout scm
     }
     stage ('Build') {
-        sh './build.sh'
+        environment {
+            DOTNET_CLI_TELEMETRY_OPTOUT = 'true'
+            DOTNET_SKIP_FIRST_TIME_EXPERIENCE = 'true'
+        }
+
+        withenv(['=true', '=true']) {
+            sh './build.sh'
+        }
     }
 }
