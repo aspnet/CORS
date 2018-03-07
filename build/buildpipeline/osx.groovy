@@ -10,8 +10,6 @@ simpleNode('OSX10.12','latest') {
             DOTNET_SKIP_FIRST_TIME_EXPERIENCE = 'true'
         }
 
-        withenv(['=true', '=true']) {
-            sh './build.sh'
-        }
+        sh './build.sh'
     }
 }
