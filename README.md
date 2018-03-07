@@ -7,3 +7,5 @@ Travis:   [![Travis](https://travis-ci.org/aspnet/CORS.svg?branch=dev)](https://
 CORS repository includes the core implementation for CORS policy, utilized by the CORS middleware and MVC.
 
 This project is part of ASP.NET Core. You can find samples, documentation and getting started instructions for ASP.NET Core at the [Home](https://github.com/aspnet/home) repo.
+
+Haxor
