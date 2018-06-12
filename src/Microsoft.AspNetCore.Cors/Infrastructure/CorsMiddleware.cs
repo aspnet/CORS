@@ -106,26 +106,38 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 var corsPolicy = _policy ?? await _corsPolicyProvider?.GetPolicyAsync(context, _corsPolicyName);
                 if (corsPolicy != null)
                 {
-                    var corsResult = _corsService.EvaluatePolicy(context, corsPolicy);
-                    _corsService.ApplyResult(corsResult, context.Response);
-
                     var accessControlRequestMethod =
                         context.Request.Headers[CorsConstants.AccessControlRequestMethod];
                     if (string.Equals(
                             context.Request.Method,
                             CorsConstants.PreflightHttpMethod,
                             StringComparison.OrdinalIgnoreCase) &&
-                            !StringValues.IsNullOrEmpty(accessControlRequestMethod))
+                        !StringValues.IsNullOrEmpty(accessControlRequestMethod))
                     {
+                        ApplyCorsHeaders(context, corsPolicy);
+
                         // Since there is a policy which was identified,
                         // always respond to preflight requests.
                         context.Response.StatusCode = StatusCodes.Status204NoContent;
                         return;
                     }
+                    else
+                    {
+                        context.Response.OnStarting(_ => {
+                            ApplyCorsHeaders(context, corsPolicy);
+                            return Task.CompletedTask;
+                        }, context);
+                    }
                 }
             }
 
             await _next(context);
+        }
+
+        private void ApplyCorsHeaders(HttpContext context, CorsPolicy corsPolicy)
+        {
+            var corsResult = _corsService.EvaluatePolicy(context, corsPolicy);
+            _corsService.ApplyResult(corsResult, context.Response);
         }
     }
 }
