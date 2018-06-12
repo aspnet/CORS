@@ -349,5 +349,39 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 Assert.Equal("PUT", response.Headers.GetValues(CorsConstants.AccessControlAllowMethods).FirstOrDefault());
             }
         }
+
+        [Fact]
+        public async Task CorsRequest_AfterResponseCleared_SetsResponseHeaders()
+        {
+            // Arrange
+            var hostBuilder = new WebHostBuilder()
+                .Configure(app => {
+                    app.UseCors(builder =>
+                        builder.WithOrigins("http://localhost:5001")
+                            .WithMethods("PUT")
+                            .WithHeaders("Header1")
+                            .WithExposedHeaders("AllowedHeader"));
+                    app.Run(async context => {
+                        context.Response.Clear();
+                        await context.Response.WriteAsync("Cross origin response");
+                    });
+                })
+                .ConfigureServices(services => services.AddCors());
+
+            using (var server = new TestServer(hostBuilder)) {
+                // Act
+                // Actual request.
+                var response = await server.CreateRequest("/")
+                    .AddHeader(CorsConstants.Origin, "http://localhost:5001")
+                    .SendAsync("PUT");
+
+                // Assert
+                response.EnsureSuccessStatusCode();
+                Assert.Equal(2, response.Headers.Count());
+                Assert.Equal("Cross origin response", await response.Content.ReadAsStringAsync());
+                Assert.Equal("http://localhost:5001", response.Headers.GetValues(CorsConstants.AccessControlAllowOrigin).FirstOrDefault());
+                Assert.Equal("AllowedHeader", response.Headers.GetValues(CorsConstants.AccessControlExposeHeaders).FirstOrDefault());
+            }
+        }
     }
 }
