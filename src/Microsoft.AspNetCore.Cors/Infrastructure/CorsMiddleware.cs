@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.AspNetCore.Cors.Infrastructure
@@ -20,6 +21,54 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         private readonly CorsPolicy _policy;
         private readonly string _corsPolicyName;
         private readonly ILogger _logger;
+
+        /// <summary>
+        /// Instantiates a new <see cref="CorsMiddleware"/>.
+        /// </summary>
+        /// <param name="next">The next middleware in the pipeline.</param>
+        /// <param name="corsService">An instance of <see cref="ICorsService"/>.</param>
+        /// <param name="policyProvider">A policy provider which can get an <see cref="CorsPolicy"/>.</param>
+        [Obsolete("This constructor has been replaced with an equivalent constructor which requires an ILoggerFactory")]
+        public CorsMiddleware(
+            RequestDelegate next,
+            ICorsService corsService,
+            ICorsPolicyProvider policyProvider)
+            : this(next, corsService, policyProvider, NullLoggerFactory.Instance, policyName: null)
+        {
+        }
+
+        /// <summary>
+        /// Instantiates a new <see cref="CorsMiddleware"/>.
+        /// </summary>
+        /// <param name="next">The next middleware in the pipeline.</param>
+        /// <param name="corsService">An instance of <see cref="ICorsService"/>.</param>
+        /// <param name="policyProvider">A policy provider which can get an <see cref="CorsPolicy"/>.</param>
+        /// <param name="policyName">An optional name of the policy to be fetched.</param>
+        [Obsolete("This constructor has been replaced with an equivalent constructor which requires an ILoggerFactory")]
+        public CorsMiddleware(
+            RequestDelegate next,
+            ICorsService corsService,
+            ICorsPolicyProvider policyProvider,
+            string policyName
+            )
+            : this(next, corsService, policyProvider, NullLoggerFactory.Instance, policyName)
+        {
+        }
+
+        /// <summary>
+        /// Instantiates a new <see cref="CorsMiddleware"/>.
+        /// </summary>
+        /// <param name="next">The next middleware in the pipeline.</param>
+        /// <param name="corsService">An instance of <see cref="ICorsService"/>.</param>
+        /// <param name="policy">An instance of the <see cref="CorsPolicy"/> which can be applied.</param>
+        [Obsolete("This constructor has been replaced with an equivalent constructor which requires an ILoggerFactory")]
+        public CorsMiddleware(
+            RequestDelegate next,
+            ICorsService corsService,
+            CorsPolicy policy)
+            : this(next, corsService, policy, NullLoggerFactory.Instance)
+        {
+        }
 
         /// <summary>
         /// Instantiates a new <see cref="CorsMiddleware"/>.
