@@ -191,17 +191,19 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                     }
                     else
                     {
-                        context.Response.OnStarting(c => {
+                        context.Response.OnStarting(state =>
+                        {
+                            var (httpContext, policy) = (Tuple<HttpContext, CorsPolicy>)state;
                             try
                             {
-                                ApplyCorsHeaders((HttpContext)c, corsPolicy);
+                                ApplyCorsHeaders(httpContext, policy);
                             }
                             catch (Exception e)
                             {
                                 _logger.Log(LogLevel.Error, e, "Applying CORS headers to response failed");
                             }
                             return Task.CompletedTask;
-                        }, context);
+                        }, Tuple.Create(context, corsPolicy));
                     }
                 }
             }
