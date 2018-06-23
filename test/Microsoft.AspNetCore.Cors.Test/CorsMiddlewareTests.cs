@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -246,6 +247,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             // Arrange
             var corsService = Mock.Of<ICorsService>();
             var mockProvider = new Mock<ICorsPolicyProvider>();
+            var loggerFactory = Mock.Of<ILoggerFactory>();
             mockProvider.Setup(o => o.GetPolicyAsync(It.IsAny<HttpContext>(), It.IsAny<string>()))
                 .Returns(Task.FromResult<CorsPolicy>(null))
                 .Verifiable();
@@ -254,6 +256,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 Mock.Of<RequestDelegate>(),
                 corsService,
                 mockProvider.Object,
+                loggerFactory,
                 policyName: null);
 
             var httpContext = new DefaultHttpContext();
@@ -274,6 +277,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             // Arrange
             var corsService = Mock.Of<ICorsService>();
             var mockProvider = new Mock<ICorsPolicyProvider>();
+            var loggerFactory = Mock.Of<ILoggerFactory>();
             mockProvider.Setup(o => o.GetPolicyAsync(It.IsAny<HttpContext>(), It.IsAny<string>()))
                 .Returns(Task.FromResult<CorsPolicy>(null))
                 .Verifiable();
@@ -282,6 +286,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 Mock.Of<RequestDelegate>(),
                 corsService,
                 mockProvider.Object,
+                loggerFactory,
                 policyName: null);
 
             var httpContext = new DefaultHttpContext();
@@ -347,6 +352,40 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 Assert.Equal(2, response.Headers.Count());
                 Assert.Equal("http://localhost:5001", response.Headers.GetValues(CorsConstants.AccessControlAllowOrigin).FirstOrDefault());
                 Assert.Equal("PUT", response.Headers.GetValues(CorsConstants.AccessControlAllowMethods).FirstOrDefault());
+            }
+        }
+
+        [Fact]
+        public async Task CorsRequest_AfterResponseCleared_SetsResponseHeaders()
+        {
+            // Arrange
+            var hostBuilder = new WebHostBuilder()
+                .Configure(app => {
+                    app.UseCors(builder =>
+                        builder.WithOrigins("http://localhost:5001")
+                            .WithMethods("PUT")
+                            .WithHeaders("Header1")
+                            .WithExposedHeaders("AllowedHeader"));
+                    app.Run(async context => {
+                        context.Response.Clear();
+                        await context.Response.WriteAsync("Cross origin response");
+                    });
+                })
+                .ConfigureServices(services => services.AddCors());
+
+            using (var server = new TestServer(hostBuilder)) {
+                // Act
+                // Actual request.
+                var response = await server.CreateRequest("/")
+                    .AddHeader(CorsConstants.Origin, "http://localhost:5001")
+                    .SendAsync("PUT");
+
+                // Assert
+                response.EnsureSuccessStatusCode();
+                Assert.Equal(2, response.Headers.Count());
+                Assert.Equal("Cross origin response", await response.Content.ReadAsStringAsync());
+                Assert.Equal("http://localhost:5001", response.Headers.GetValues(CorsConstants.AccessControlAllowOrigin).FirstOrDefault());
+                Assert.Equal("AllowedHeader", response.Headers.GetValues(CorsConstants.AccessControlExposeHeaders).FirstOrDefault());
             }
         }
     }
