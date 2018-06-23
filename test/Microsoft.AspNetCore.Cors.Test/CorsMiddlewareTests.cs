@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -246,6 +247,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             // Arrange
             var corsService = Mock.Of<ICorsService>();
             var mockProvider = new Mock<ICorsPolicyProvider>();
+            var loggerFactory = Mock.Of<ILoggerFactory>();
             mockProvider.Setup(o => o.GetPolicyAsync(It.IsAny<HttpContext>(), It.IsAny<string>()))
                 .Returns(Task.FromResult<CorsPolicy>(null))
                 .Verifiable();
@@ -254,6 +256,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 Mock.Of<RequestDelegate>(),
                 corsService,
                 mockProvider.Object,
+                loggerFactory,
                 policyName: null);
 
             var httpContext = new DefaultHttpContext();
@@ -274,6 +277,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             // Arrange
             var corsService = Mock.Of<ICorsService>();
             var mockProvider = new Mock<ICorsPolicyProvider>();
+            var loggerFactory = Mock.Of<ILoggerFactory>();
             mockProvider.Setup(o => o.GetPolicyAsync(It.IsAny<HttpContext>(), It.IsAny<string>()))
                 .Returns(Task.FromResult<CorsPolicy>(null))
                 .Verifiable();
@@ -282,6 +286,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
                 Mock.Of<RequestDelegate>(),
                 corsService,
                 mockProvider.Object,
+                loggerFactory,
                 policyName: null);
 
             var httpContext = new DefaultHttpContext();
