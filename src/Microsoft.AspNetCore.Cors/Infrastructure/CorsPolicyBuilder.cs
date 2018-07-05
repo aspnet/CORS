@@ -38,7 +38,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// <returns>The current policy builder.</returns>
         public CorsPolicyBuilder WithOrigins(params string[] origins)
         {
-            foreach (var req in origins)
+            foreach (var req in origins.Select(o => o.ToLowerInvariant()))
             {
                 _policy.Origins.Add(req);
             }
