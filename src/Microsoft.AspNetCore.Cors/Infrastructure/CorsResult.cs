@@ -45,6 +45,11 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         public bool VaryByOrigin { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating if 'Simple methods' should be filtered.
+        /// </summary>
+        public bool FilterSimpleMethods { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the <see cref="TimeSpan"/> for which the results of a preflight request can be cached.
         /// </summary>
         public TimeSpan? PreflightMaxAge

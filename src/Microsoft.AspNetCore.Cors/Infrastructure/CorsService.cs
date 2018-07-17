@@ -125,40 +125,32 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             var requestHeaders =
                 context.Request.Headers.GetCommaSeparatedValues(CorsConstants.AccessControlRequestHeaders);
 
-            if (!policy.AllowAnyMethod)
+            if (!policy.AllowAnyMethod && !policy.Methods.Contains(accessControlRequestMethod.ToString(), StringComparer.OrdinalIgnoreCase))
             {
-                var found = false;
-                for (var i = 0; i < policy.Methods.Count; i++)
-                {
-                    var method = policy.Methods[i];
-                    if (string.Equals(method, accessControlRequestMethod, StringComparison.OrdinalIgnoreCase))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found)
-                {
-                    _logger?.PolicyFailure();
-                    _logger?.AccessControlMethodNotAllowed(accessControlRequestMethod);
-                    return;
-                }
+                _logger?.PolicyFailure();
+                _logger?.AccessControlMethodNotAllowed(accessControlRequestMethod);
+                return;
             }
 
-            if (!policy.AllowAnyHeader &&
-                requestHeaders != null)
+            if (requestHeaders != null)
             {
-                foreach (var requestHeader in requestHeaders)
+                if (!policy.AllowAnyHeader)
                 {
-                    if (!CorsConstants.SimpleRequestHeaders.Contains(requestHeader, StringComparer.OrdinalIgnoreCase) &&
-                                                  !policy.Headers.Contains(requestHeader, StringComparer.OrdinalIgnoreCase))
+                    foreach (var requestHeader in requestHeaders)
                     {
-                        _logger?.PolicyFailure();
-                        _logger?.RequestHeaderNotAllowed(requestHeader);
-                        return;
+                        if (!CorsConstants.SimpleRequestHeaders.Contains(requestHeader, StringComparer.OrdinalIgnoreCase) &&
+                                                      !policy.Headers.Contains(requestHeader, StringComparer.OrdinalIgnoreCase))
+                        {
+                            _logger?.PolicyFailure();
+                            _logger?.RequestHeaderNotAllowed(requestHeader);
+                            return;
+                        }
                     }
                 }
+
+                result.FilterSimpleMethods
+                    = !(CorsConstants.SimpleMethods.Contains(accessControlRequestMethod.ToString(), StringComparer.OrdinalIgnoreCase) &&
+                        requestHeaders.Contains("content-type", StringComparer.OrdinalIgnoreCase));
             }
 
             AddOriginToResult(origin, policy, result);
@@ -201,17 +193,25 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
 
             if (result.AllowedMethods.Count > 0)
             {
-                // Filter out simple methods
-                var nonSimpleAllowMethods = result.AllowedMethods
-                    .Where(m =>
-                        !CorsConstants.SimpleMethods.Contains(m, StringComparer.OrdinalIgnoreCase))
-                    .ToArray();
+                string[] allowMethods;
+                if (result.FilterSimpleMethods)
+                {
+                    // Filter out simple methods
+                    allowMethods = result.AllowedMethods
+                        .Where(m =>
+                            !CorsConstants.SimpleMethods.Contains(m, StringComparer.OrdinalIgnoreCase))
+                        .ToArray();
+                }
+                else
+                {
+                    allowMethods = result.AllowedMethods.ToArray();
+                }
 
-                if (nonSimpleAllowMethods.Length > 0)
+                if (allowMethods.Length > 0)
                 {
                     headers.SetCommaSeparatedValues(
                         CorsConstants.AccessControlAllowMethods,
-                        nonSimpleAllowMethods);
+                        allowMethods);
                 }
             }
 

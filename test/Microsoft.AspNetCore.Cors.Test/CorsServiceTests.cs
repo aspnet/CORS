@@ -1122,6 +1122,32 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             Assert.False(result.VaryByOrigin);
         }
 
+        [Fact]
+        public void EvaluatePreflightRequest_SimpleAllowMethods_AllowMethodsHeaderAddedForSimpleMethodsWithContentType()
+        {
+            // Arrange
+            var httpContext
+                = GetHttpContext(
+                    origin: "http://example.com",
+                    accessControlRequestHeaders: new string[] { "Content-Type" },
+                    accessControlRequestMethod: "GET");
+
+            var service = new CorsService(new TestCorsOptions());
+            var result = new CorsResult();
+            var policy = new CorsPolicy();
+            policy.Origins.Add("http://example.com");
+            policy.Methods.Add("GET");
+            policy.Headers.Add("Content-Type");
+
+            // Act
+            service.EvaluatePreflightRequest(httpContext, policy, result);
+
+            // Assert
+            Assert.False(result.FilterSimpleMethods);
+            Assert.Contains("GET", result.AllowedMethods);
+            Assert.Contains("Content-Type", result.AllowedHeaders);
+        }
+
 
         private static HttpContext GetHttpContext(
             string method = null,
