@@ -172,6 +172,23 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             Assert.True(corsPolicy.IsOriginAllowed("http://test.example.com"));
         }
 
+        /// <summary>
+        /// Browsers construct a triple (scheme, host, port) to form the origin.
+        /// Scheme and host are lower cased, per RFC 6454
+        /// </summary>
+        [Fact]
+        public void HostAndSchemeAreCaseInsensitive()
+        {
+            
+            // Arrange
+            var builder = new CorsPolicyBuilder("http://www.EXAMPLE.com", "HTTPS://www.example2.com");
+
+            // Assert
+            var corsPolicy = builder.Build();
+            Assert.True(corsPolicy.IsOriginAllowed("http://www.example.com"));
+            Assert.True(corsPolicy.IsOriginAllowed("https://www.example2.com"));
+        }
+
         [Fact]
         public void WithMethods_AddsMethods()
         {
