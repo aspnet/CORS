@@ -244,7 +244,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             {
                 result.AllowedOrigin = origin;
 
-                if(policy.Origins.Count > 1)
+                if(policy.Origins.Count > 1 || policy.Origins.Any(o => o.Contains("*")))
                 {
                     result.VaryByOrigin = true;
                 }
