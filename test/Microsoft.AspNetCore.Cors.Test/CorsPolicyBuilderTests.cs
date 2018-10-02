@@ -300,30 +300,17 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
             Assert.False(corsPolicy.SupportsCredentials);
         }
 
-        [Fact]
-        public void GetNormalizedOrigin_ReturnsLowerCasedValue_IfStringIsNotParseableAsUrl()
+        [Theory]
+        [InlineData(@"Some-String", "some-string")]
+        [InlineData(@"x:\\Test", "x:\\test")]
+        [InlineData("FTP://Some-url", "ftp://some-url")]
+        public void GetNormalizedOrigin_ReturnsLowerCasedValue_IfStringIsNotHttpOrHttpsUrl(string origin, string expected)
         {
-            // Arrange
-            var origin = "x:\\Test";
-
             // Act
             var normalizedOrigin = CorsPolicyBuilder.GetNormalizedOrigin(origin);
 
             // Assert
-            Assert.Equal("x:\\test", normalizedOrigin);
-        }
-
-        [Fact]
-        public void GetNormalizedOrigin_ReturnsLowerCasedValue_IsStringIsNetworkPath()
-        {
-            // Arrange
-            var origin = "File://MNT/Share/";
-
-            // Act
-            var normalizedOrigin = CorsPolicyBuilder.GetNormalizedOrigin(origin);
-
-            // Assert
-            Assert.Equal("file://mnt/share/", normalizedOrigin);
+            Assert.Equal(expected, normalizedOrigin);
         }
 
         [Fact]
@@ -368,7 +355,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         [Theory]
         [InlineData("http://www.Example.com:80", "http://www.example.com:80")]
         [InlineData("https://www.Example.com:8080", "https://www.example.com:8080")]
-        public void GetNormalizedOrigin_PreservesPort(string origin, string expected)
+        public void GetNormalizedOrigin_PreservesPort_ForNonIdnHosts(string origin, string expected)
         {
             // Act
             var normalizedOrigin = CorsPolicyBuilder.GetNormalizedOrigin(origin);
