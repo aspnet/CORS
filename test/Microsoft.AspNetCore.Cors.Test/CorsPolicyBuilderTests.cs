@@ -301,8 +301,8 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         }
 
         [Theory]
-        [InlineData(@"Some-String", "some-string")]
-        [InlineData(@"x:\\Test", "x:\\test")]
+        [InlineData("Some-String", "some-string")]
+        [InlineData("x:\\Test", "x:\\test")]
         [InlineData("FTP://Some-url", "ftp://some-url")]
         public void GetNormalizedOrigin_ReturnsLowerCasedValue_IfStringIsNotHttpOrHttpsUrl(string origin, string expected)
         {
