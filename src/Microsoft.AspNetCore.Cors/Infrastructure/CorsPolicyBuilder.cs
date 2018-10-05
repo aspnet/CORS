@@ -17,6 +17,7 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// Creates a new instance of the <see cref="CorsPolicyBuilder"/>.
         /// </summary>
         /// <param name="origins">list of origins which can be added.</param>
+        /// <remarks> <see cref="WithOrigins(string[])"/> for details on normalizing the origin header</remarks>
         public CorsPolicyBuilder(params string[] origins)
         {
             WithOrigins(origins);
@@ -36,6 +37,21 @@ namespace Microsoft.AspNetCore.Cors.Infrastructure
         /// </summary>
         /// <param name="origins">The origins that are allowed.</param>
         /// <returns>The current policy builder.</returns>
+        /// <remarks>
+        /// This method normalizes the origin headers prior to adding it to <see cref="CorsPolicy.Origins"/> to match
+        /// the normalization performed by the browser on the value sent in the <c>ORIGIN</c> header.
+        /// <list type="bullet">
+        /// <item>
+        /// If the specified origin has an internationalized domain name (IDN), the punycoded value is used. If the origin
+        /// specifies a default port (e.g. 443 for HTTPS or 80 for HTTP), this will be dropped as part of normalization.
+        /// Finally, the scheme and punycoded host name are culture invariant lower cased before being added to the <see cref="CorsPolicy.Origins"/>
+        /// collection.
+        /// </item>
+        /// <item>
+        /// For all other origins, normalization involves performing a culture invariant lower casing of the host name.
+        /// </item>
+        /// </list>
+        /// </remarks>
         public CorsPolicyBuilder WithOrigins(params string[] origins)
         {
             foreach (var origin in origins)
